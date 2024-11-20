@@ -1,0 +1,10 @@
+*.pdf
+__pycache__/
+lib/
+*.so
+*.o
+*.c
+build/
+*.pyd
+*.pyc
+*.exe
