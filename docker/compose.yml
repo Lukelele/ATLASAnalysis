@@ -1,0 +1,5 @@
+services:
+  atlas:
+    image: hyy
+    deploy:
+      replicas: 1
