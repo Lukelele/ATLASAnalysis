@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-test-deployment
+  labels:
+    app: python-test
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: python-test
+  template:
+    metadata:
+      labels:
+        app: python-test
+    spec:
+      containers:
+      - name: python-test
+        image: python-test
+        imagePullPolicy: Never

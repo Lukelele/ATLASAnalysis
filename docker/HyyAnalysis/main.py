@@ -206,7 +206,7 @@ def plot_data(data):
     main_axes.set_ylim( bottom=0, top=np.amax(data_x)*1.1 ) 
     
     # set minor ticks on the y-axis of the main axes
-    main_axes.yaxis.set_minor_locator( AutoMinorLocator() ) 
+    main_axes.yaxis.set_minor_locator( AutoMinorLocator() )
     
     # avoid displaying y=0 on the main axes
     main_axes.yaxis.get_major_ticks()[0].set_visible(False) 

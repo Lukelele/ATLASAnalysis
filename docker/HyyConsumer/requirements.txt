@@ -1,0 +1,9 @@
+uproot
+pandas
+numpy
+matplotlib
+lmfit
+requests
+aiohttp
+awkward-pandas
+pika
