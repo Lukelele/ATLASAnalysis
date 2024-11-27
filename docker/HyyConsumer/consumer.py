@@ -16,7 +16,7 @@ def process_data(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
     
     # Simulate a long task
-    time.sleep(0.01)
+    time.sleep(0.4)
 
 channel.basic_consume(queue='task_queue', on_message_callback=process_data)
 channel.start_consuming()

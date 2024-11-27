@@ -30,4 +30,3 @@ for i in range(100):
 for data in list_to_send:
     send_task(str(data))
     print(f"Sent: {data}")
-    time.sleep(0.01)

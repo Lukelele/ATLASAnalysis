@@ -1,20 +1,87 @@
+# rabbitmq-deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python-test-deployment
-  labels:
-    app: python-test
+  name: rabbitmq
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
-      app: python-test
+      app: rabbitmq
   template:
     metadata:
       labels:
-        app: python-test
+        app: rabbitmq
     spec:
       containers:
-      - name: python-test
-        image: python-test
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+        - containerPort: 15672
+        - containerPort: 5672
+        livenessProbe:
+          exec:
+            command: ["rabbitmq-diagnostics", "-q", "ping"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 30
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+  - name: management
+    port: 15672
+    targetPort: 15672
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  type: ClusterIP
+
+---
+# consumer-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: consumer
+        imagePullPolicy: Never
+
+---
+# producer-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+      - name: producer
+        image: producer
         imagePullPolicy: Never
