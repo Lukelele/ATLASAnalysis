@@ -1,3 +1,5 @@
+# launch the rabbitmq service and the consumer and producer services using Docker services
+
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -17,13 +19,24 @@ services:
       - rabbit
     deploy:
       mode: replicated
-      replicas: 10
+      replicas: 2
     depends_on:
       rabbitmq:
         condition: service_healthy
         restart: true
   producer:
     build: HyyProducer/.
+    networks:
+      - rabbit
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+  collector:
+    build: HyyCollector/.
     networks:
       - rabbit
     deploy:

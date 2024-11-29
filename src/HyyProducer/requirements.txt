@@ -1,0 +1,7 @@
+requests
+aiohttp
+pika
+pandas
+awkward-pandas
+numpy
+uproot

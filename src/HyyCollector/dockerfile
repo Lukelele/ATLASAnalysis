@@ -1,0 +1,8 @@
+FROM python:latest
+
+COPY requirements.txt ./
+COPY collector.py ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["python", "-u", "./collector.py"]

@@ -1,0 +1,5 @@
+pika
+pandas
+matplotlib
+lmfit
+numpy
