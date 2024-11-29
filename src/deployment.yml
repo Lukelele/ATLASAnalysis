@@ -66,22 +66,75 @@ spec:
         imagePullPolicy: Never
 
 ---
-# producer-deployment
-apiVersion: apps/v1
-kind: Deployment
+# producer-job
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: producer
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: producer
   template:
     metadata:
       labels:
         app: producer
     spec:
+      restartPolicy: Never
       containers:
       - name: producer
         image: producer
         imagePullPolicy: Never
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: collector-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/Users/lukelele/Downloads/output"
+---
+# volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: collector-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+---
+# collector-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collector
+  template:
+    metadata:
+      labels:
+        app: collector
+    spec:
+      containers:
+      - name: collector
+        image: collector
+        imagePullPolicy: Never
+        volumeMounts:
+          - name: collector-volume
+            mountPath: "/app/data"
+      volumes:
+      - name: collector-volume
+        persistentVolumeClaim:
+          claimName: collector-volume-claim

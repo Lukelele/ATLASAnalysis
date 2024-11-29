@@ -39,6 +39,8 @@ services:
     build: HyyCollector/.
     networks:
       - rabbit
+    volumes:
+      - collector_data:/app/data
     deploy:
       mode: replicated
       replicas: 1
@@ -52,3 +54,5 @@ networks:
     driver: overlay
     attachable: true
 
+volumes:
+  collector_data:
