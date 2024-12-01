@@ -1,4 +1,4 @@
-# launch the rabbitmq service and the consumer and producer services using Docker services
+# launch the rabbitmq service and the worker and distributor services using Docker services
 
 services:
   rabbitmq:
@@ -13,8 +13,8 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
-  consumer:
-    build: HyyConsumer/.
+  worker:
+    build: HyyWorker/.
     networks:
       - rabbit
     deploy:
@@ -24,8 +24,8 @@ services:
       rabbitmq:
         condition: service_healthy
         restart: true
-  producer:
-    build: HyyProducer/.
+  distributor:
+    build: HyyDistributor/.
     networks:
       - rabbit
     deploy:
