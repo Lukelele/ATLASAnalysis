@@ -1,8 +1,8 @@
 FROM python:latest
 
 COPY requirements.txt ./
-COPY producer.py ./
+COPY worker.py ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "-u", "./producer.py"]
+CMD ["python", "-u", "./worker.py"]

@@ -45,42 +45,42 @@ spec:
   type: ClusterIP
 
 ---
-# consumer-deployment
+# worker-deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: consumer
+  name: worker
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: consumer
+      app: worker
   template:
     metadata:
       labels:
-        app: consumer
+        app: worker
     spec:
       containers:
-      - name: consumer
-        image: consumer
+      - name: worker
+        image: worker
         imagePullPolicy: Never
 
 ---
-# producer-job
+# distributor-job
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: producer
+  name: distributor
 spec:
   template:
     metadata:
       labels:
-        app: producer
+        app: distributor
     spec:
       restartPolicy: Never
       containers:
-      - name: producer
-        image: producer
+      - name: distributor
+        image: distributor
         imagePullPolicy: Never
 
 ---
@@ -97,7 +97,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/Users/lukelele/Downloads/output"
+    path: "/Users/lukelele/Downloads/output"         # change this to local outputpath
 ---
 # volume claim
 apiVersion: v1

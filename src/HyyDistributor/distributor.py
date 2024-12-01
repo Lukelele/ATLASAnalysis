@@ -30,13 +30,18 @@ def prep_task(channel, tuple_path, samples_list, fraction=0.8):
         
         tree = uproot.open(fileString + ":mini")
         numevents = tree.num_entries
-        for data in tree.iterate(["photon_pt","photon_eta","photon_phi","photon_E","photon_isTightID","photon_etcone20"], library="pd", entry_stop=numevents*fraction, step_size=1000):
-            for col in ["photon_pt","photon_eta","photon_phi","photon_E","photon_isTightID","photon_etcone20"]:
-                data[col] = data[col].apply(lambda x:x.tolist() if isinstance(x, np.ndarray) else x)
-            send_task(channel, data.to_json())
-
+        # for data in tree.iterate(["photon_pt","photon_eta","photon_phi","photon_E","photon_isTightID","photon_etcone20"], library="pd", entry_stop=numevents*fraction, step_size=1000):
+        #     for col in ["photon_pt","photon_eta","photon_phi","photon_E","photon_isTightID","photon_etcone20"]:
+        #         data[col] = data[col].apply(lambda x:x.tolist() if isinstance(x, np.ndarray) else x)
+            # send_task(channel, data.to_json())
+            
+        rows_per_task = 1000
+        for i in range(0, numevents, rows_per_task):
+            start_index = i
+            end_index = min(numevents, i+rows_per_task-1)
+            process_dict = {"file": val, "start": start_index, "end": end_index}
+            send_task(channel, json.dumps(process_dict))
     
-
 
 fraction = 0.8
 

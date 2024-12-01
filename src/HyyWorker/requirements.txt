@@ -3,3 +3,5 @@ pandas
 numpy
 awkward-pandas
 pika
+requests
+aiohttp
