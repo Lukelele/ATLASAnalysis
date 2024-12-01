@@ -61,13 +61,14 @@ def apply_cut(data):
 
 
 def process_data(ch, method, properties, body):
+    # Read and decode the data
     df = pd.read_json(StringIO(body.decode()))
+    # Apply the cuts
     processed_df = apply_cut(df)
     
-    collector_channel = connection.channel()
-    collector_channel.queue_declare(queue='collector_queue', durable=True)
-    
-    collector_channel.basic_publish(
+    # Send the processed data to the collector queue
+    ch.queue_declare(queue='collector_queue', durable=True)
+    ch.basic_publish(
         exchange='',
         routing_key='collector_queue',
         body=processed_df.to_json(),
@@ -84,6 +85,8 @@ connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
 channel = connection.channel()
 
 channel.queue_declare(queue='task_queue', durable=True)
+channel.queue_declare(queue='collector_queue', durable=True)
+
 # Ensure fair dispatch
 channel.basic_qos(prefetch_count=1)
     
