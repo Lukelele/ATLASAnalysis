@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: rabbitmq-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: worker-deployment
+  triggers:
+  - type: rabbitmq
+    metadata:
+      queueName: task_queue
+      host: amqp://user:password@rabbitmq:5672
+      queueLength: "5"
+      mode: QueueLength
+  minReplicaCount: 1
+  maxReplicaCount: 10
