@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: src-worker
+        image: worker
         imagePullPolicy: Never
 
 ---
@@ -80,7 +80,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: distributor
-        image: src-distributor
+        image: distributor
         imagePullPolicy: Never
 
 ---
@@ -129,7 +129,7 @@ spec:
     spec:
       containers:
       - name: collector
-        image: src-collector
+        image: collector
         imagePullPolicy: Never
         volumeMounts:
           - name: collector-volume
