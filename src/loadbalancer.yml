@@ -16,3 +16,4 @@ spec:
       mode: QueueLength
   minReplicaCount: 1
   maxReplicaCount: 10
+  
