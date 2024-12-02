@@ -58,7 +58,8 @@ kubectl scale --replicas=num_workers worker
 ```
 
 ## Automatic Scaling with Kubernetes
-First install KEDA, then run
+First install KEDA following the instruction in the official KEDA website: https://keda.sh/docs/2.16/deploy/
+Then run
 ```bash
 cd src
 kubectl apply -f loadbalancer.yml
